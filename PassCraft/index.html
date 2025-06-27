@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PassCraft</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 PassCraft</h1>
+
+    <label>
+      Length:
+      <input type="number" id="length" value="12" min="4" max="32">
+    </label><br><br>
+
+    <label><input type="checkbox" id="uppercase" checked> Uppercase Letters</label><br>
+    <label><input type="checkbox" id="lowercase" checked> Lowercase Letters</label><br>
+    <label><input type="checkbox" id="numbers" checked> Numbers</label><br>
+    <label><input type="checkbox" id="symbols"> Symbols</label><br><br>
+
+    <button onclick="generatePassword()">Generate Password</button><br><br>
+
+    <input type="text" id="result" readonly><br>
+    <button onclick="copyPassword()">Copy</button>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
