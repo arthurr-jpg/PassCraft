@@ -1,25 +1,555 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 40px;
-  background-color: #f0f0f0;
-}
-.container {
-  background: #fff;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
+  position: relative;
+}
+
+/* Subtle pattern background */
+body::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,0,0,.05) 35px, rgba(0,0,0,.05) 70px);
+}
+
+.container {
+  background: white;
+  border-radius: 24px;
+  padding: 50px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
+  animation: containerAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@keyframes containerAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container:hover {
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.lock-icon {
+  width: 120px;
+  height: 140px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+/* Person illustration */
+.person-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Head */
+.person-head {
+  width: 60px;
+  height: 60px;
+  background: #667eea;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* Eyes */
+.person-eyes {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.4s ease;
+}
+
+.eye {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* Hands covering eyes */
+.person-hands {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 3;
+}
+
+.hand {
+  width: 18px;
+  height: 22px;
+  background: #fbbf24;
+  border-radius: 8px;
+  position: relative;
+}
+
+.hand::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 3px;
+  background: #fbbf24;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.hand.left {
+  transform: rotate(-10deg);
+}
+
+.hand.right {
+  transform: rotate(10deg);
+}
+
+/* Body */
+.person-body {
+  width: 50px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 25px 25px 15px 15px;
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Arms */
+.person-arms {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.arm {
+  position: absolute;
+  width: 8px;
+  height: 40px;
+  background: #667eea;
+  border-radius: 4px;
+  top: 5px;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.arm.left {
+  left: -8px;
+  transform-origin: top center;
+}
+
+.arm.right {
+  right: -8px;
+  transform-origin: top center;
+}
+
+/* Hand at end of arm */
+.arm::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #fbbf24;
+  border-radius: 50%;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Covering eyes animation state */
+.person-container.covering .person-hands {
+  opacity: 1;
+}
+
+.person-container.covering .person-eyes {
+  opacity: 0;
+}
+
+.person-container.covering .arm.left {
+  transform: rotate(-45deg) translateX(-5px);
+}
+
+.person-container.covering .arm.right {
+  transform: rotate(45deg) translateX(5px);
+}
+
+/* Idle animation */
+@keyframes personIdle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.person-container {
+  animation: personIdle 3s ease-in-out infinite;
+}
+
+h1 {
+  color: #1a202c;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 0.95em;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.password-display {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.password-display:hover {
+  border-color: #cbd5e0;
+  background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+}
+
+#result {
+  font-size: 1.4em;
+  color: #2d3748;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  word-break: break-all;
+  text-align: center;
+  background: transparent;
+  border: none;
+  width: 100%;
+  outline: none;
+  cursor: default;
+  letter-spacing: 2px;
+}
+
+#result::placeholder {
+  color: #a0aec0;
+  font-weight: 500;
+}
+
+.password-display.generating {
+  animation: generatePulse 0.5s ease;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+@keyframes generatePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.strength-meter {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  height: 6px;
+  background: #e2e8f0;
   border-radius: 10px;
-  display: inline-block;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
 }
-input[type="checkbox"] {
-  margin-right: 5px;
+
+.strength-bar {
+  height: 100%;
+  width: 0%;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 10px;
+  position: relative;
 }
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
+
+.strength-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: strengthShimmer 2s linear infinite;
+}
+
+@keyframes strengthShimmer {
+  to { transform: translateX(100%); }
+}
+
+.strength-text {
+  text-align: center;
+  color: #4a5568;
+  font-size: 0.9em;
+  margin-bottom: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.length-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 16px;
+  background: #f7fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s;
+}
+
+.length-control:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.length-control label {
+  margin: 0;
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+input[type="number"] {
+  width: 80px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 1.1em;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input[type="number"]:hover {
+  border-color: #cbd5e0;
+}
+
+input[type="number"]:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.checkboxes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  background: #f7fafc;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
-input[type="text"] {
+
+.checkbox-item:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+  transform: translateX(4px);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  margin-right: 14px;
+  cursor: pointer;
+  accent-color: #667eea;
+  transition: transform 0.2s;
+}
+
+.checkbox-item input[type="checkbox"]:checked {
+  animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes checkBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+  font-size: 0.95em;
+  flex: 1;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+button {
+  padding: 18px 28px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
   width: 300px;
-  margin-top: 10px;
+  height: 300px;
+}
+
+#generateBtn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+#generateBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+#generateBtn:active {
+  transform: translateY(0);
+}
+
+#generateBtn.generating::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: buttonShimmer 0.8s;
+}
+
+@keyframes buttonShimmer {
+  to { left: 100%; }
+}
+
+#copyBtn {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#copyBtn:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+#copyBtn.copied {
+  background: #48bb78;
+  border-color: #48bb78;
+  color: white;
+  animation: copySuccess 0.5s ease;
+}
+
+@keyframes copySuccess {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .container {
+    padding: 35px 25px;
+  }
+  
+  h1 {
+    font-size: 2em;
+  }
+  
+  .buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  #result {
+    font-size: 1.2em;
+  }
 }
